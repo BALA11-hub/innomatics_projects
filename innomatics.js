@@ -1,79 +1,76 @@
-// 1. ATM Withdrawal System
-function atmWithdrawal(balance, amount, pin, enteredPin) {
-    if (enteredPin !== pin) return "Incorrect PIN";
-    if (amount > balance) return "Insufficient Funds";
-    if (amount % 100 !== 0) return "Enter amount in multiples of 100";
-    return `Withdrawal successful. Remaining balance: $${balance - amount}`;
+document.addEventListener("DOMContentLoaded", function() {
+    loadCart();
+});
+
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+function addToCart(name, price) {
+    let existingItem = cart.find(item => item.name === name);
+    if (existingItem) {
+        existingItem.quantity++;
+    } else {
+        cart.push({ name, price, quantity: 1 });
+    }
+    saveCart();
+    updateCart();
 }
 
-// 2. Online Shopping Discount & Free Shipping
-function calculateFinalAmount(orderAmount) {
-    let discount = 0, shipping = 0;
-    if (orderAmount > 1000) discount = 0.2;
-    else if (orderAmount >= 500) discount = 0.1;
-    if (orderAmount < 50) shipping = 10;
-    return orderAmount * (1 - discount) + shipping;
+function updateCart() {
+    let cartItems = document.getElementById("cart-items");
+    let totalPrice = document.getElementById("total-price");
+    let cartCount = document.getElementById("cart-count");
+    
+    cartItems.innerHTML = "";
+    let total = 0;
+    let itemCount = 0;
+    
+    cart.forEach((item, index) => {
+        let li = document.createElement("li");
+        li.innerHTML = `${item.name} - $${item.price} x ${item.quantity} 
+            <button onclick="changeQuantity(${index}, -1)">-</button> 
+            <button onclick="changeQuantity(${index}, 1)">+</button>`;
+        
+        cartItems.appendChild(li);
+        total += item.price * item.quantity;
+        itemCount += item.quantity;
+    });
+    
+    totalPrice.textContent = total.toFixed(2);
+    cartCount.textContent = itemCount;
 }
 
-// 3. Student Grading System with Extra Credit
-function calculateGrade(marks, attendance) {
-    if (attendance > 90) marks += 5;
-    if (marks >= 90) return "A";
-    if (marks >= 80) return "B";
-    if (marks >= 70) return "C";
-    if (marks >= 60) return "D";
-    return "F";
+function changeQuantity(index, amount) {
+    if (cart[index].quantity + amount > 0) {
+        cart[index].quantity += amount;
+    } else {
+        cart.splice(index, 1);
+    }
+    saveCart();
+    updateCart();
 }
 
-// 4. Smart Traffic Light System
-function trafficLightControl(density) {
-    if (density === "Heavy Traffic") return 60;
-    if (density === "Moderate Traffic") return 40;
-    return 20;
+function removeFromCart(index) {
+    cart.splice(index, 1);
+    saveCart();
+    updateCart();
 }
 
-// 5. Movie Ticket Pricing with Time and Age Discount
-function calculateTicketPrice(age, showTime) {
-    let price = 12;
-    if (showTime < 17) price *= 0.8;
-    if (age > 60) price *= 0.7;
-    else if (age < 12) price *= 0.6;
-    return price;
+function clearCart() {
+    cart = [];
+    saveCart();
+    updateCart();
 }
 
-// 6. Job Application Filter
-function isEligibleForJob(age, experience, qualification) {
-    return age >= 21 && age <= 55 && experience >= 2 && qualification === "Bachelor's Degree";
+function saveCart() {
+    localStorage.setItem("cart", JSON.stringify(cart));
 }
 
-// 7. E-commerce Coupon Redemption
-function applyCoupon(orderAmount, couponCode) {
-    if (couponCode === "DISCOUNT10" && orderAmount > 500) return orderAmount * 0.9;
-    if (couponCode === "FREESHIP" && orderAmount > 200) return orderAmount;
-    return orderAmount;
+function loadCart() {
+    cart = JSON.parse(localStorage.getItem("cart")) || [];
+    updateCart();
 }
 
-// 8. Fitness Membership Plan
-function choosePlan(planType, wantsTrainer, wantsDietPlan) {
-    if (wantsDietPlan) return "VIP ($80/month)";
-    if (wantsTrainer) return "Premium ($50/month)";
-    return "Basic ($20/month)";
-}
-
-// 9. Electricity Bill Calculation with Peak Hours
-function calculateElectricityBill(units, timeOfDay) {
-    let rate = units <= 100 ? 5 : units <= 300 ? 4 : 3;
-    if (timeOfDay >= 20 || timeOfDay < 8) rate *= 1.1;
-    return units * rate;
-}
-
-// 10. Flight Ticket Booking System
-function calculateFlightFare(classType, luggageWeight, isStudent, isSenior) {
-    let fare = 300;
-    if (classType === "Business") fare += 200;
-    if (classType === "First") fare += 500;
-    if (luggageWeight > 20) fare += Math.ceil((luggageWeight - 20) / 10) * 50;
-    if (isStudent) fare *= 0.85;
-    else if (isSenior) fare *= 0.9;
-    return fare;
+function toggleCart() {
+    let cartElement = document.getElementById("cart");
+    cartElement.style.display = cartElement.style.display === "block" ? "none" : "block";
 }
