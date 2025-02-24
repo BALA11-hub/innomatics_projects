@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ATM Withdrawal System</title>
+    <link rel="stylesheet" href="./jsprob.css">
+</head>
+<body>
+    </div>
+    <h1>ATM Withdrawal System</h1>
+    <label for="account">Select Account:</label>
+    <select id="account" onchange="fetchBalance()">
+        <option value="">-- Select Account --</option>
+        <option value="1234">Account 1234</option>
+        <option value="5678">Account 5678</option>
+        <option value="9876">Account 9876</option>
+    </select>
+    <label for="balance">Current Balance:</label>
+    <input type="number" id="balance" readonly>
+    <label for="amount">Withdraw Amount:</label>
+    <input type="number" id="amount" placeholder="Enter amount">
+    <label for="pin">Enter PIN:</label>
+    <input type="password" id="pin" placeholder="Enter PIN"><br>
+    <button onclick="atmWithdrawal()">Withdraw</button>
+    <p id="result"></p>
+    <script>
+        const accounts = {
+            "1234": { balance: 5000, pin: "1111" },
+            "5678": { balance: 3000, pin: "2222" },
+            "9876": { balance: 7000, pin: "3333" }
+        };
+
+        function fetchBalance() {
+            let selectedAccount = document.getElementById("account").value;
+            if (selectedAccount) {
+                document.getElementById("balance").value = accounts[selectedAccount].balance;
+            } else {
+                document.getElementById("balance").value = "";
+            }
+        }
+
+        function atmWithdrawal() {
+            let selectedAccount = document.getElementById("account").value;
+            if (!selectedAccount) {
+                document.getElementById('result').innerText = "Please select an account";
+                return;
+            }
+            
+            let balance = accounts[selectedAccount].balance;
+            let amount = parseFloat(document.getElementById('amount').value);
+            let enteredPin = document.getElementById('pin').value;
+
+            if (enteredPin !== accounts[selectedAccount].pin) {
+                document.getElementById('result').innerText = "Incorrect PIN";
+                return;
+            }
+            if (amount > balance) {
+                document.getElementById('result').innerText = "Insufficient Funds";
+                return;
+            }
+            if (amount % 100 !== 0) {
+                document.getElementById('result').innerText = "Enter amount in multiples of 100";
+                return;
+            }
+            
+            accounts[selectedAccount].balance -= amount;
+            document.getElementById('balance').value = accounts[selectedAccount].balance;
+            document.getElementById('result').innerText = `Withdrawal Successful! Remaining Balance: $${accounts[selectedAccount].balance}`;
+        }
+    </script>
+</body>
+</html>

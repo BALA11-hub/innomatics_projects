@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Shopping Discount</title>
+    <link rel="stylesheet" href="./jsprob.css">
+</head>
+<body>
+    <div class="shopping-container">
+        <h1>Online Shopping Discount & Free Shipping</h1>
+        <label for="items">Enter Items (comma separated):</label>
+        <input type="text" id="items" placeholder="Item1, Item2, Item3">
+        <label for="orderAmount">Enter Order Amount ($):</label>
+        <input type="number" id="orderAmount" placeholder="Enter amount"><br><br>
+        <button onclick="calculateFinalAmount()">Calculate</button>
+        <p id="subtotal"></p>
+        <p id="discount"></p>
+        <p id="tax"></p>
+        <p id="shipping"></p>
+        <p id="finalPrice"></p>
+    </div>
+    
+    <script>
+        function calculateFinalAmount() {
+            let orderAmount = parseFloat(document.getElementById('orderAmount').value);
+            let discount = 0;
+            let shippingCost = 0;
+            let taxRate = 0.08; // 8% GST
+            
+            if (orderAmount > 1000) {
+                discount = 0.20;
+            } else if (orderAmount >= 500) {
+                discount = 0.10;
+            }
+            
+            let discountAmount = orderAmount * discount;
+            let discountedPrice = orderAmount - discountAmount;
+            let taxAmount = discountedPrice * taxRate;
+            
+            if (discountedPrice > 50) {
+                shippingCost = 0;
+            } else {
+                shippingCost = 10;
+            }
+            
+            let finalAmount = discountedPrice + taxAmount + shippingCost;
+            
+            document.getElementById('subtotal').innerText = `Subtotal: $${orderAmount.toFixed(2)}`;
+            document.getElementById('discount').innerText = `Discount: $${discountAmount.toFixed(2)} (${discount * 100}%)`;
+            document.getElementById('tax').innerText = `Tax (8% GST): $${taxAmount.toFixed(2)}`;
+            document.getElementById('shipping').innerText = `Shipping Charges: $${shippingCost}`;
+            document.getElementById('finalPrice').innerText = `Final Amount: $${finalAmount.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Coupon Redemption</title>
+    <link rel="stylesheet" href="./jsprob.css">
+</head>
+<body>
+    <div class="coupon-container">
+        <h1>E-commerce Coupon Redemption</h1>
+        <label for="orderAmount">Enter Order Amount ($):</label>
+        <input type="number" id="orderAmount" placeholder="Enter amount">
+        <label for="couponCode">Enter Coupon Code:</label>
+        <input type="text" id="couponCode" placeholder="DISCOUNT10 or FREESHIP"><br>
+        <button onclick="applyCoupon()">Apply Coupon</button>
+        <p id="discountAmount"></p>
+        <p id="finalPrice"></p>
+    </div>
+    
+    <script>
+        function applyCoupon() {
+            let orderAmount = parseFloat(document.getElementById('orderAmount').value);
+            let couponCode = document.getElementById('couponCode').value.toUpperCase();
+            let discount = 10 ;
+            let shippingCost = orderAmount > 200 ? 0 : 10;
+            
+            if (couponCode === "DISCOUNT10" && orderAmount > 500) {
+                discount = 0.10 * orderAmount;
+            } else if (couponCode === "FREESHIP" && orderAmount > 200) {
+                shippingCost = 0;
+            }
+            
+            let finalAmount = orderAmount - discount + shippingCost;
+            
+            document.getElementById('discountAmount').innerText = `Discount Applied: $${discount.toFixed(2)}`;
+            document.getElementById('finalPrice').innerText = `Final Amount: $${finalAmount.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>

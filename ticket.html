@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Ticket Booking</title>
+    <link rel="stylesheet" href="./jsprob.css">
+</head>
+<body>
+    <div class="flight-container">
+        <h1>Flight Ticket Booking</h1>
+        <label for="classType">Select Class:</label>
+        <select id="classType">
+            <option value="economy">Economy ($300)</option>
+            <option value="business">Business ($500)</option>
+            <option value="first">First Class ($800)</option>
+        </select>
+        
+        <label for="luggage">Enter Luggage Weight (kg):</label>
+        <input type="number" id="luggage" placeholder="Enter weight">
+        
+        <label for="student">Are you a Student?</label>
+        <input type="checkbox" id="student">
+        
+        <label for="senior">Are you a Senior Citizen (60+)?</label>
+        <input type="checkbox" id="senior">
+        
+        <br><br><br><button onclick="calculateFare()">Calculate Fare</button>
+        <p id="finalFare"></p>
+    </div>
+    
+    <script>
+        function calculateFare() {
+            let classType = document.getElementById('classType').value;
+            let luggage = parseFloat(document.getElementById('luggage').value) || 0;
+            let isStudent = document.getElementById('student').checked;
+            let isSenior = document.getElementById('senior').checked;
+            
+            let baseFare = classType === "economy" ? 300 : classType === "business" ? 500 : 800;
+            let extraLuggageCharge = luggage > 20 ? Math.floor((luggage - 20) / 10) * 50 : 0;
+            
+            let discount = 0;
+            if (isStudent) discount = 0.15;
+            else if (isSenior) discount = 0.10;
+            
+            let totalFare = (baseFare + extraLuggageCharge) * (1 - discount);
+            
+            document.getElementById('finalFare').innerText = `Total Fare: $${totalFare.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>

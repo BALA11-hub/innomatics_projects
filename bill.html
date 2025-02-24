@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Electricity Bill Calculator</title>
+    <link rel="stylesheet" href="./jsprob.css">
+</head>
+<body>
+    <div class="electricity-container">
+        <h1>Electricity Bill Calculator</h1>
+        <label for="units">Enter Units Consumed:</label>
+        <input type="number" id="units" placeholder="Enter units">
+        
+        <label for="timeOfDay">Select Time of Day:</label>
+        <select id="timeOfDay">
+            <option value="normal">Normal Hours (8 AM - 8 PM)</option>
+            <option value="peak">Peak Hours (8 PM - 8 AM)</option>
+        </select>
+        
+       <br><br><br><br> <button onclick="calculateBill()">Calculate Bill</button>
+        <p id="billAmount"></p>
+    </div>
+    
+    <script>
+        function calculateBill() {
+            let units = parseFloat(document.getElementById('units').value);
+            let timeOfDay = document.getElementById('timeOfDay').value;
+            let rate = 0;
+            
+            if (units <= 100) rate = 5;
+            else if (units > 100 && units <= 300) rate = 4;
+            else rate = 3;
+            
+            let totalBill = units * rate;
+            
+            if (timeOfDay === "peak") {
+                totalBill *= 1.1; // 10% extra charge during peak hours
+            }
+            
+            document.getElementById('billAmount').innerText = `Total Electricity Bill: $${totalBill.toFixed(2)}`;
+        }
+    </script>
+</body>
+</html>

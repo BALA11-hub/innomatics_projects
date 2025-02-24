@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fitness Membership Plan</title>
+    <link rel="stylesheet" href="./jsprob1.css">
+</head>
+<body>
+    <div class="membership-container">
+        <h1>Choose Your Fitness Membership Plan</h1>
+        <label for="planType">Select Plan:</label>
+        <select id="planType">
+            <option value="basic">Basic ($20/month)</option>
+            <option value="premium">Premium ($50/month)</option>
+            <option value="vip">VIP ($80/month)</option>
+        </select>
+        
+        <label for="trainer">Personal Trainer ($30 extra)</label>
+        <input type="checkbox" id="trainer">
+        
+        <label for="diet">Diet Plan ($20 extra)</label>
+        <input type="checkbox" id="diet">
+        
+       <br> <button onclick="calculateMembership()">Calculate Price</button>
+        <p id="finalCost"></p>
+    </div>
+    
+    <script>
+        function calculateMembership() {
+            let planType = document.getElementById('planType').value;
+            let trainer = document.getElementById('trainer').checked ? 30 : 0;
+            let diet = document.getElementById('diet').checked ? 20 : 0;
+            let basePrice = 0;
+            
+            if (planType === "basic") basePrice = 20;
+            else if (planType === "premium") basePrice = 50;
+            else if (planType === "vip") basePrice = 80;
+            
+            let finalPrice = basePrice + trainer + diet;
+            document.getElementById('finalCost').innerText = `Total Monthly Cost: $${finalPrice}`;
+        }
+    </script>
+</body>
+</html>

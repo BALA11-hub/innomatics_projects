@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Grading System</title>
+    <link rel="stylesheet" href="./jsprob.css">
+</head>
+<body>
+    <div class="grading-container">
+        <h1>Student Grading System</h1>
+        <label for="marks">Enter Marks:</label>
+        <input type="number" id="marks" placeholder="Enter marks">
+        <label for="attendance">Enter Attendance (%):</label>
+        <input type="number" id="attendance" placeholder="Enter attendance"><br>
+        <button onclick="calculateGrade()">Calculate Grade</button>
+        <p id="finalMarks"></p>
+        <p id="grade"></p>
+    </div>
+    
+    <script>
+        function calculateGrade() {
+            let marks = parseFloat(document.getElementById('marks').value);
+            let attendance = parseFloat(document.getElementById('attendance').value);
+            let extraCredit = 0;
+            
+            if (attendance > 90) {
+                extraCredit = 5;
+            }
+            
+            let finalMarks = marks + extraCredit;
+            let grade = "";
+            
+            if (finalMarks >= 90) {
+                grade = "A";
+            } else if (finalMarks >= 80) {
+                grade = "B";
+            } else if (finalMarks >= 70) {
+                grade = "C";
+            } else if (finalMarks >= 60) {
+                grade = "D";
+            } else {
+                grade = "F";
+            }
+            
+            document.getElementById('finalMarks').innerText = `Final Marks: ${finalMarks}`;
+            document.getElementById('grade').innerText = `Grade: ${grade}`;
+        }
+    </script>
+</body>
+</html>
